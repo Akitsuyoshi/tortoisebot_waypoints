@@ -70,12 +70,14 @@ class WaypointActionClass(object):
         desired_yaw = math.atan2(self._des_pos.y - self._position.y, self._des_pos.x - self._position.x)
         err_pos = math.sqrt(pow(self._des_pos.y - self._position.y, 2) + pow(self._des_pos.x - self._position.x, 2))
         err_yaw = desired_yaw - self._yaw
+        err_yaw = math.atan2(math.sin(err_yaw), math.cos(err_yaw))
 
         # perform task
         while err_pos > self._dist_precision and success:
             # update vars
             desired_yaw = math.atan2(self._des_pos.y - self._position.y, self._des_pos.x - self._position.x)
             err_yaw = desired_yaw - self._yaw
+            err_yaw = math.atan2(math.sin(err_yaw), math.cos(err_yaw))
             err_pos = math.sqrt(pow(self._des_pos.y - self._position.y, 2) + pow(self._des_pos.x - self._position.x, 2))
             rospy.loginfo("Current Yaw: %s" % str(self._yaw))
             rospy.loginfo("Desired Yaw: %s" % str(desired_yaw))
@@ -91,15 +93,15 @@ class WaypointActionClass(object):
                 rospy.loginfo("fix yaw")
                 self._state = 'fix yaw'
                 twist_msg = Twist()
-                twist_msg.angular.z = 0.65 if err_yaw > 0 else -0.65
+                twist_msg.angular.z = 0.5 if err_yaw > 0 else -0.5
                 self._pub_cmd_vel.publish(twist_msg)
             else:
                 # go to point
                 rospy.loginfo("go to point")
                 self._state = 'go to point'
                 twist_msg = Twist()
-                twist_msg.linear.x = 0.6
-                twist_msg.angular.z = 0
+                twist_msg.linear.x = min(0.5, max(err_pos * 1.5, 0.25))
+                twist_msg.angular.z = err_yaw
                 # twist_msg.angular.z = 0.1 if err_yaw > 0 else -0.1
                 self._pub_cmd_vel.publish(twist_msg)
 
