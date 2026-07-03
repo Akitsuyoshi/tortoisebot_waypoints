@@ -2,10 +2,11 @@
 
     <!--
     <node pkg="tortoisebot_waypoints"
-          type="waypoint_action_server.py"
+          type="tortoisebot_action_server.py"
           name="tortoisebot_as"
           output="screen"/>
     -->
+    <node pkg="tortoisebot_waypoints" type="reset_world_client.py" name="reset_world_client" />
 
     <test test-name="waypoint_action_test"
           pkg="tortoisebot_waypoints"
