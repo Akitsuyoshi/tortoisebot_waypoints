@@ -10,6 +10,9 @@
 
     <test test-name="waypoint_action_test"
           pkg="tortoisebot_waypoints"
-          type="test_waypoint_action.py"/>
+          type="test_waypoint_action.py">
+        <param name="target_x" value="0.4" type="double" />
+        <param name="target_y" value="0.4" type="double" />
+    </test>
 
 </launch>

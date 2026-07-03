@@ -20,10 +20,13 @@ class TestWaypointAction(unittest.TestCase):
         cls.client = actionlib.SimpleActionClient("tortoisebot_as", WaypointActionAction)
         cls.client.wait_for_server(rospy.Duration(10))
         rospy.sleep(1.0)
+
+        target_x = rospy.get_param("~target_x", 0.4)
+        target_y = rospy.get_param("~target_y", 0.4)
         
         # Set and send the goal once
         cls.goal_msg = WaypointActionGoal()
-        cls.goal_msg.position = Point(-0.5, 0.5, 0.0)
+        cls.goal_msg.position = Point(target_x, target_y, 0.0)
         cls.client.send_goal_and_wait(cls.goal_msg, rospy.Duration(20))
 
         cls.final_odom = rospy.wait_for_message("/odom", Odometry, timeout=10)
