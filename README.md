@@ -44,8 +44,8 @@ test/waypoints_test.test
 Set the waypoint goal to:
 
 ```xml
-<param name="goal_x" value="0.4"/>
-<param name="goal_y" value="0.4"/>
+<param name="target_x" value="0.4"/>
+<param name="target_y" value="0.4"/>
 ```
 
 Run:
@@ -74,8 +74,8 @@ test/waypoints_test.test
 Change the waypoint goal to:
 
 ```xml
-<param name="goal_x" value="2.0"/>
-<param name="goal_y" value="2.0"/>
+<param name="target_x" value="2.0"/>
+<param name="target_y" value="2.0"/>
 ```
 
 Run the same command again:

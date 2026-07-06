@@ -123,6 +123,9 @@ class WaypointActionClass(object):
         if success:
             self._result.success = True
             self._as.set_succeeded(self._result)
+        else:
+            self._result.success = False
+            self._as.set_preempted(self._result)
 
 if __name__ == '__main__':
     rospy.init_node('tortoisebot_as')

@@ -28,6 +28,7 @@ class TestWaypointAction(unittest.TestCase):
         cls.goal_msg = WaypointActionGoal()
         cls.goal_msg.position = Point(target_x, target_y, 0.0)
         cls.client.send_goal_and_wait(cls.goal_msg, rospy.Duration(20))
+        cls.result = cls.client.get_result()
 
         cls.final_odom = rospy.wait_for_message("/odom", Odometry, timeout=10)
          
@@ -37,6 +38,9 @@ class TestWaypointAction(unittest.TestCase):
         return yaw
     
     def test_position_error(self):
+        self.assertIsNotNone(self.result)
+        self.assertTrue(self.result.success)
+
         final_x = self.final_odom.pose.pose.position.x
         final_y = self.final_odom.pose.pose.position.y
 
@@ -50,6 +54,9 @@ class TestWaypointAction(unittest.TestCase):
         self.assertLess(dy, 0.05, "Position y error is too big")
     
     def test_yaw_error(self):
+        self.assertIsNotNone(self.result)
+        self.assertTrue(self.result.success)
+        
         final_yaw = self.euler_to_quaternion(self.final_odom.pose.pose.orientation)
         expected_yaw = math.atan2(self.goal_msg.position.y, self.goal_msg.position.x)
 
